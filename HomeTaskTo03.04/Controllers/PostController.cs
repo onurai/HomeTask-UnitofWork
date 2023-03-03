@@ -1,8 +1,10 @@
 ﻿using HomeTaskTo03._04.Data.Entity;
+using HomeTaskTo03._04.Dto;
 using HomeTaskTo03._04.Repository;
 using HomeTaskTo03._04.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using System.Text.Json;
 
@@ -12,66 +14,87 @@ namespace HomeTaskTo03._04.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IRepository<Post, int> _postService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<PostController> _logger;
 
-        public PostController(IRepository<Post, int> bookService)
+        public PostController(IUnitOfWork unitOfWork, ILogger<PostController> logger)
         {
-            _postService = bookService;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = _postService.GetAll();
+            _logger.LogInformation("Request accepted at {0}", DateTime.Now);
+            var result = await _unitOfWork.postRepository.GetAll()/*.ToListAsync()*/;
+            _logger.LogWarning($"Request Successfully  completed at {DateTime.Now}, and result is {JsonSerializer.Serialize(result)}");
             return Ok(result);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(string title, string subtitle, string description, string content, int blogId)
+        public async Task<IActionResult> Create([FromBody] PostDto postDto)
         {
-            await _postService.Add(new Post
+            Post post = new ()
             {
-                Title = title,
-                Subtitle = subtitle,
-                Description = description,
-                Content = content,
-                BlogId = blogId,
-                CreationDate = DateTime.Now,
-            });
-            await _postService.Commit();
-
-            return Ok();
+                Title = postDto.Title,
+                Subtitle = postDto.Subtitle,
+                Description = postDto.Description,
+                Content = postDto.Content,
+                BlogId = postDto.BlogId,
+            };
+            await _unitOfWork.postRepository.Add(post);
+            await _unitOfWork.Commit();
+            return Ok(post);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(int id, string title, string subtitle, string description, string content, int blogId)
+        public async Task<IActionResult> Update(int id, PostDto postDto)
         {
-            await _postService.Update(new Post
+            try
             {
-                Title = title,
-                Subtitle = subtitle,
-                Description = description,
-                Content = content,
-                BlogId = blogId
-            });
-            await _postService.Commit();
-            return Ok();
+                var result = await _unitOfWork.postRepository.Find(id);
+                _logger.LogInformation($"This post is in the data base {id}");
+                result.Subtitle = postDto.Subtitle;
+                result.Title = postDto.Title;
+                result.Content = postDto.Content;
+                result.Description = postDto.Description;
+                result.BlogId = postDto.BlogId;
+                await _unitOfWork.postRepository.Update(result);
+                _logger.LogInformation($"{id} th post was already updated in the data base");
+                await _unitOfWork.Commit();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error when looking up id in database id not found {id}");
+                throw;
+            }
         }
 
         [HttpDelete]
         public async Task<IActionResult> Remove(int id)
         {
-            var post = await _postService.Find(id);
-            await _postService.Delete(post);
-            await _postService.Commit();
-            return Ok(post);
+            try
+            {
+                _logger.LogInformation($"{id} obtained from base date");
+                var result = await _unitOfWork.postRepository.Find(id);
+                await _unitOfWork.postRepository.Delete(result);
+                await _unitOfWork.Commit();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error happened then post with id of {id} was not found");
+                throw;
+            }
         }
 
         [HttpGet("Id")]
         public async Task<IActionResult> GetId(int id)
         {
-            var result = await _postService.Find(id);
+            var result = await _unitOfWork.postRepository.Find(id);
             return Ok(result);
         }
 

@@ -34,37 +34,46 @@ namespace HomeTaskTo03._04.Controllers
         }
 
         [HttpPost]
-        //public async Task<IActionResult> Create([FromBody] BlogDto blog)
-        //{
-        //    if (ModelState.IsValid != true)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    Blog blog = new(
-        //    {
-        //        BlogName = blog.BlogName,
-        //        Description = blog.Description,
-        //        PostsCount = blog.PostsCount
-        //    });
-        //    await _unitOfWork.blogRepository.Add(blog);
-        //    await _unitOfWork.Commit();
-
-        //    return Ok(blog);
-        //}
-
-        [HttpPut]
-        public async Task<IActionResult> Update(int id, string blogName, string description, int postsCount)
+        public async Task<IActionResult> Create([FromBody] BlogDto blogDto)
         {
-            var blog = await _unitOfWork.blogRepository.Find(id);
+            if (ModelState.IsValid != true)
+            {
+                return BadRequest(ModelState);
+            }
 
-            blog.BlogName = blogName;
-            blog.Description = description; 
-            blog.PostsCount = postsCount;
-
-            await _unitOfWork.blogRepository.Update(blog);
+            Blog blog = new()
+            {
+                BlogName = blogDto.BlogName,
+                Description = blogDto.Description,
+                PostsCount = blogDto.PostsCount
+            };
+            await _unitOfWork.blogRepository.Add(blog);
             await _unitOfWork.Commit();
             return Ok(blog);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(int id, BlogDto blogDto)
+        {
+            try
+            {
+                var blog = await _unitOfWork.blogRepository.Find(id);
+                _logger.LogInformation($"Blog got from db with Id of {id}");
+                blog.BlogName = blogDto.BlogName;
+                blog.Description = blogDto.Description;
+                blog.PostsCount = blogDto.PostsCount;
+                await _unitOfWork.blogRepository.Update(blog);
+                _logger.LogDebug($"Blog updated from db with Id of {id}");
+                await _unitOfWork.Commit();
+                _logger.LogInformation($"Request is completed successfully, Blog with ID of {id} and name of {blog.BlogName}");
+                return Ok(blog);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error occured when deleting the blog i-th id of {id}");
+                throw ex;
+            }
+            
         }
 
         [HttpDelete]

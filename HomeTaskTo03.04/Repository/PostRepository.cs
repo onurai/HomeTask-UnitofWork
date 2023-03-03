@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 
 namespace HomeTaskTo03._04.Repository
 {
-    public class PostRepository : IPostRepository
+    public class PostRepository : IPostRepository, EfRepository<Post, int>
     {
         private AppDbContext _dbContext;
 
-        public PostRepository(AppDbContext dbContext) 
+        public PostRepository(AppDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext; 
         }
