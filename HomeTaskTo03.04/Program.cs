@@ -36,7 +36,7 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultServer")));
+    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 
     builder.Services.AddScoped<IPostService, PostService>();
     builder.Services.AddScoped<IPostRepository, PostRepository>();
