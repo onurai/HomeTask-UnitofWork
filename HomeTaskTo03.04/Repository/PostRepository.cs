@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace HomeTaskTo03._04.Repository
 {
-    public class PostRepository : IPostRepository, EfRepository<Post, int>
+    public class PostRepository : EfRepository<Post, int>, IPostRepository
     {
         private AppDbContext _dbContext;
 
@@ -22,7 +22,7 @@ namespace HomeTaskTo03._04.Repository
 
         public Task<Post> GetId(int id)
         {
-            var result = _dbContext.Posts.FirstOrDefaultAsync(i => i.BlogId == id);
+            var result = _dbContext.Posts.FirstOrDefaultAsync(i => i.Id == id);
             return result;
         }
 
@@ -34,7 +34,7 @@ namespace HomeTaskTo03._04.Repository
                 Subtitle = subtitle,
                 Content = content,
                 Description = description,
-                BlogId = blogId
+                Id = blogId
             };
             _dbContext.Posts.Add(post);
             await _dbContext.SaveChangesAsync();
@@ -43,23 +43,24 @@ namespace HomeTaskTo03._04.Repository
 
         public async Task<bool> Remove(int id)
         {
-            var result = await _dbContext.Posts.FirstOrDefaultAsync(x => x.BlogId == id);
+            var result = await _dbContext.Posts.FirstOrDefaultAsync(x => x.Id == id);
             _dbContext.Posts.Remove(result);
             await _dbContext.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> Update(int id, string title, string subtitle, string content, string description, int blogId)
+        public async Task<bool> Update(int id, string title, string subtitle, string content, string description, int blogid)
         {
-            Post post = await _dbContext.Posts.FirstOrDefaultAsync(x => x.PostId == id);
+            Post post = await _dbContext.Posts.FirstOrDefaultAsync(x => x.Id == blogid);
             post.Title = title;
             post.Subtitle = subtitle;
             post.Content = content;
             post.Description = description;
-            post.BlogId = blogId;
+            post.BlogId = blogid;
             await _dbContext.SaveChangesAsync();
             return true;
         }
 
+        
     }
 }

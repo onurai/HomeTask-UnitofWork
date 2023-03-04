@@ -34,13 +34,13 @@ namespace HomeTaskTo03._04.Repository
 
         public Task<Blog> GetId(int id)
         {
-            var result = _db.Blogs.FirstOrDefaultAsync(i => i.BlogId == id);
+            var result = _db.Blogs.FirstOrDefaultAsync(i => i.Id == id);
             return result;
         }
 
         public async Task<bool> Remove(int id)
         {
-            var result = await _db.Blogs.FirstOrDefaultAsync(x => x.BlogId == id);
+            var result = await _db.Blogs.FirstOrDefaultAsync(x => x.Id == id);
             _db.Blogs.Remove(result);
             await _db.SaveChangesAsync();
             return true;
@@ -48,7 +48,7 @@ namespace HomeTaskTo03._04.Repository
 
         public async Task<bool> Update(int id, string blogName, string description, int postsCount)
         {
-            Blog blog = await _db.Blogs.FirstOrDefaultAsync(x => x.BlogId == id);
+            Blog blog = await _db.Blogs.FirstOrDefaultAsync(x => x.Id == id);
 
             blog.BlogName = blogName;
             blog.Description = description;

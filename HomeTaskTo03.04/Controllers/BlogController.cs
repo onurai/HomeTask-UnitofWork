@@ -28,7 +28,7 @@ namespace HomeTaskTo03._04.Controllers
         public async Task<IActionResult> GetAll()
         {
             _logger.LogInformation("Request accepted at {0}", DateTime.Now);
-            var result = await _unitOfWork.blogRepository.GetAll()/*.ToListAsync()*/;
+            var result = await _unitOfWork.blogRepository.GetAll();
             _logger.LogWarning($"Request Successfully  completed at {DateTime.Now}, and result is {JsonSerializer.Serialize(result)}");
             return Ok(result);
         }

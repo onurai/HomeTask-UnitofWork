@@ -18,7 +18,7 @@ namespace HomeTaskTo03._04.UnitOfWork
             blogRepository = new BlogRepository(_appDbContext);
         }
 
-        public async System.Threading.Tasks.Task Commit()
+        public async Task Commit()
         {
             await _appDbContext.SaveChangesAsync();
         }

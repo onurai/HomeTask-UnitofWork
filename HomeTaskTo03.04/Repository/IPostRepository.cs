@@ -2,7 +2,7 @@
 
 namespace HomeTaskTo03._04.Repository
 {
-    public interface IPostRepository 
+    public interface IPostRepository : IRepository<Post, int>
     {
         Task<List<Post>> GetAll();
         Task<Post> GetId(int id);

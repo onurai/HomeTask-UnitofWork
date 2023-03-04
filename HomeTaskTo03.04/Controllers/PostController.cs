@@ -27,11 +27,10 @@ namespace HomeTaskTo03._04.Controllers
         public async Task<IActionResult> GetAll()
         {
             _logger.LogInformation("Request accepted at {0}", DateTime.Now);
-            var result = await _unitOfWork.postRepository.GetAll()/*.ToListAsync()*/;
+            var result = await _unitOfWork.postRepository.GetAll();
             _logger.LogWarning($"Request Successfully  completed at {DateTime.Now}, and result is {JsonSerializer.Serialize(result)}");
             return Ok(result);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PostDto postDto)
@@ -44,9 +43,13 @@ namespace HomeTaskTo03._04.Controllers
                 Content = postDto.Content,
                 BlogId = postDto.BlogId,
             };
-            await _unitOfWork.postRepository.Add(post);
-            await _unitOfWork.Commit();
-            return Ok(post);
+            if(post != null)
+            {
+                await _unitOfWork.postRepository.Add(post);
+                await _unitOfWork.Commit();
+                return Ok(post);
+            }
+            return BadRequest();
         }
 
         [HttpPut]
@@ -56,11 +59,12 @@ namespace HomeTaskTo03._04.Controllers
             {
                 var result = await _unitOfWork.postRepository.Find(id);
                 _logger.LogInformation($"This post is in the data base {id}");
-                result.Subtitle = postDto.Subtitle;
                 result.Title = postDto.Title;
-                result.Content = postDto.Content;
+                result.Subtitle = postDto.Subtitle;
                 result.Description = postDto.Description;
+                result.Content = postDto.Content;
                 result.BlogId = postDto.BlogId;
+
                 await _unitOfWork.postRepository.Update(result);
                 _logger.LogInformation($"{id} th post was already updated in the data base");
                 await _unitOfWork.Commit();
@@ -78,8 +82,8 @@ namespace HomeTaskTo03._04.Controllers
         {
             try
             {
-                _logger.LogInformation($"{id} obtained from base date");
                 var result = await _unitOfWork.postRepository.Find(id);
+                _logger.LogInformation($"{id} obtained from base date");
                 await _unitOfWork.postRepository.Delete(result);
                 await _unitOfWork.Commit();
                 return Ok(result);

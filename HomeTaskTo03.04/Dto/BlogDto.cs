@@ -9,7 +9,7 @@ namespace HomeTaskTo03._04.Dto
         public string Description { get; set; }
         public int PostsCount { get; set; }
     }
-
+    
     public class BlogValidator : AbstractValidator<BlogDto>
     {
         public BlogValidator()

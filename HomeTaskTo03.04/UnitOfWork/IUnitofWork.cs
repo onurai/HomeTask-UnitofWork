@@ -7,6 +7,6 @@ namespace HomeTaskTo03._04.UnitOfWork
         public IPostRepository postRepository { get; }
         public IBlogRepository blogRepository { get; set; }
 
-        public System.Threading.Tasks.Task Commit();
+        public Task Commit();
     }
 }

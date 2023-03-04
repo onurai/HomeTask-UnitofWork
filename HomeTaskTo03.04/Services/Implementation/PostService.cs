@@ -51,7 +51,7 @@ namespace HomeTaskTo03._04.Services.Implementation
 
         public async Task<bool> Update(int id, string title, string subtitle, string content, string description, int blogId)
         {
-            Post post = await _context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
+            Post post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             post.Title = title;
             post.Subtitle=subtitle;
             post.Content=content;
