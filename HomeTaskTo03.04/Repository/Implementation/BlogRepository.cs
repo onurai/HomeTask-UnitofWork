@@ -1,8 +1,9 @@
 ﻿using HomeTaskTo03._04.Data.Context;
 using HomeTaskTo03._04.Data.Entity;
+using HomeTaskTo03._04.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace HomeTaskTo03._04.Repository
+namespace HomeTaskTo03._04.Repository.Implementation
 {
     public class BlogRepository : EfRepository<Blog, int>, IBlogRepository
     {
@@ -10,7 +11,7 @@ namespace HomeTaskTo03._04.Repository
 
         public BlogRepository(AppDbContext DbContext) : base(DbContext)
         {
-            _db=DbContext;
+            _db = DbContext;
         }
 
         public async Task<Blog> Create(string blogName, string description, int postsCount)

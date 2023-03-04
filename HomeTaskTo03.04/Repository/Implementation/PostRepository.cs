@@ -1,9 +1,9 @@
 ﻿using HomeTaskTo03._04.Data.Context;
 using HomeTaskTo03._04.Data.Entity;
+using HomeTaskTo03._04.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
-namespace HomeTaskTo03._04.Repository
+namespace HomeTaskTo03._04.Repository.Implementation
 {
     public class PostRepository : EfRepository<Post, int>, IPostRepository
     {
@@ -11,7 +11,7 @@ namespace HomeTaskTo03._04.Repository
 
         public PostRepository(AppDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext; 
+            _dbContext = dbContext;
         }
 
         public async Task<List<Post>> GetAll()
@@ -61,6 +61,6 @@ namespace HomeTaskTo03._04.Repository
             return true;
         }
 
-        
+
     }
 }

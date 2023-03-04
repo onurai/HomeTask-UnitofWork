@@ -42,6 +42,7 @@ namespace HomeTaskTo03._04.Controllers
                 Description = postDto.Description,
                 Content = postDto.Content,
                 BlogId = postDto.BlogId,
+                CreationDate = DateTime.Now
             };
             if(post != null)
             {
@@ -64,7 +65,7 @@ namespace HomeTaskTo03._04.Controllers
                 result.Description = postDto.Description;
                 result.Content = postDto.Content;
                 result.BlogId = postDto.BlogId;
-
+                result.CreationDate = DateTime.Now;
                 await _unitOfWork.postRepository.Update(result);
                 _logger.LogInformation($"{id} th post was already updated in the data base");
                 await _unitOfWork.Commit();

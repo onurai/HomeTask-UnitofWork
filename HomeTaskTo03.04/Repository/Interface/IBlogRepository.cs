@@ -1,6 +1,6 @@
 ﻿using HomeTaskTo03._04.Data.Entity;
 
-namespace HomeTaskTo03._04.Repository
+namespace HomeTaskTo03._04.Repository.Interface
 {
     public interface IBlogRepository : IRepository<Blog, int>
     {

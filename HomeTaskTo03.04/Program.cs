@@ -8,6 +8,8 @@ using HomeTaskTo03._04.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using HomeTaskTo03._04.Dto;
+using HomeTaskTo03._04.Repository.Interface;
+using HomeTaskTo03._04.Repository.Implementation;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File(

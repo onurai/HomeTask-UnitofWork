@@ -1,9 +1,10 @@
 ﻿using HomeTaskTo03._04.Data.Context;
 using HomeTaskTo03._04.Data.Entity;
+using HomeTaskTo03._04.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace HomeTaskTo03._04.Repository
+namespace HomeTaskTo03._04.Repository.Implementation
 {
     public class EfRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : BaseEntity<TPrimaryKey>
     {

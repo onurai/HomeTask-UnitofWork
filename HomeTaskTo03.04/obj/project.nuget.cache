@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qQBgarA7ni442Y/MVAvz1bTSkIMpdJWH9SF+5wZFMa4MPSxypA2/gfghU9dxMikc4j/laydO14URRKFu81E8og==",
+  "dgSpecHash": "gJbLknN4CAyCD9M3gcrbN6IKOCCpaQgGIyyBL4bMUrEoPxVjBuC7RgUm6jQohGj0E/TWtVnG4u08IR5Ly2KymQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\HP\\Desktop\\Back-End\\ASP.NET CORE\\TASKS\\HomeTaskTo03.04\\HomeTaskTo03.04\\HomeTaskTo03.04.csproj",
+  "projectFilePath": "C:\\Users\\HP\\Desktop\\Back-End\\ASP.NET CORE\\TASKS\\HomeTaskTo03.04 - Logging, Mapping, UnitofWork\\HomeTaskTo03.04\\HomeTaskTo03.04.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\fluentvalidation\\11.2.1\\fluentvalidation.11.2.1.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.2.2\\fluentvalidation.aspnetcore.11.2.2.nupkg.sha512",
